@@ -1,0 +1,7 @@
+module MUTC_Unin;
+
+export { unin};
+
+external double[.] unin( int size);
+    #pragma linkname "unin_double"
+    #pragma refcounting [0]
