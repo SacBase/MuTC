@@ -1,18 +1,19 @@
-class MUTC_IO;
+class MutcIO;
 
 classtype int;
 
-use Array: {dim, shape, ==, +, sel, <};
+use ArrayArith: { ==, +, sel, <};
+use ArrayBasics: { dim, shape};
 
 export { print, mutcWorld};
 
-objdef MUTC_IO mutcWorld = to_MUTC_IO( 0);
+objdef MutcIO mutcWorld = to_MutcIO( 0);
 
 external void svp_io_puts( String::string a);
-#pragma effect MUTC_IO::mutcWorld
+#pragma effect MutcIO::mutcWorld
 
-external void svp_io_putf( double d, int base);
-#pragma effect MUTC_IO::mutcWorld
+external void svp_io_putf( double d, int places, int base);
+#pragma effect MutcIO::mutcWorld
 
 inline
 void print( double[*] array){
@@ -23,7 +24,7 @@ inline
 void print( double[*] array, int indent){
   if ( dim( array) == 0){
     indent( indent);
-    svp_io_putf( array, 10);
+    svp_io_putf( array, 16, 10);
     svp_io_puts( "\n");
   } else {
     indent(indent);
