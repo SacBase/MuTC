@@ -2,7 +2,7 @@ class MutcIO;
 
 classtype int;
 
-use ArrayArith: { ==, +, sel, <};
+use ArrayArith: { +, sel, <};
 use ArrayBasics: { dim, shape};
 
 export { print, mutcWorld};
@@ -15,28 +15,57 @@ external void svp_io_puts( String::string a);
 external void svp_io_putf( double d, int places, int base);
 #pragma effect MutcIO::mutcWorld
 
+external void sac_svp_io_putn( int num, int base);
+#pragma effect MutcIO::mutcWorld
+
 inline
 void print( double[*] array){
   print(array, 0);
 }
 
 inline
-void print( double[*] array, int indent){
-  if ( dim( array) == 0){
-    indent( indent);
-    svp_io_putf( array, 16, 10);
-    svp_io_puts( "\n");
-  } else {
-    indent(indent);
-    svp_io_puts("[\n");
-  
-    for ( i=0; i < shape(array)[0]; i++){
-      print( array[i], indent + 1);
-    }
+void print( int[*] array){
+  print(array, 0);
+}
 
-    indent(indent);
-    svp_io_puts("]\n");
+inline
+void print( double scaler, int indent){
+  indent( indent);
+  svp_io_putf( scaler, 16, 10);
+  svp_io_puts( "\n");
+}
+
+inline
+void print( int scaler, int indent){
+  indent( indent);
+  sac_svp_io_putn( scaler, 10);
+  svp_io_puts( "\n");
+}
+
+inline
+void print( double[+] array, int indent){
+  indent(indent);
+  svp_io_puts("[\n");
+  
+  for ( i=0; i < shape(array)[0]; i++){
+    print( array[i], indent + 1);
   }
+  
+  indent(indent);
+  svp_io_puts("]\n");
+}
+
+inline
+void print( int[+] array, int indent){
+  indent(indent);
+  svp_io_puts("[\n");
+  
+  for ( i=0; i < shape(array)[0]; i++){
+    print( array[i], indent + 1);
+  }
+  
+  indent(indent);
+  svp_io_puts("]\n");
 }
 
 inline
