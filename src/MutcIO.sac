@@ -5,7 +5,7 @@ classtype int;
 use ArrayArith: { +, sel, <};
 use ArrayBasics: { dim, shape};
 
-export { print, mutcWorld};
+export { FibrePrint, print, mutcWorld};
 
 objdef MutcIO mutcWorld = to_MutcIO( 0);
 
@@ -18,22 +18,58 @@ external void svp_io_putf( double d, int places, int base);
 external void sac_svp_io_putn( int num, int base);
 #pragma effect MutcIO::mutcWorld
 
-inline
-void print( double[*] array){
-  print(array, 0);
-}
 
-inline
-void print( int[*] array){
-  print(array, 0);
-}
+#define UNTYPED( type)                                                \
+inline                                                                \
+void print( type[*] array){                                           \
+  print(array, 0);                                                    \
+}                                                                     \
+                                                                      \
+inline                                                                \
+void FibrePrint( type[+] array){                                      \
+  FibrePrint( array, 0);                                              \
+}                                                                     \
+                                                                      \
+inline                                                                \
+void FibrePrint( type scaler){                                        \
+  FibrePrint( scaler, 0);                                             \
+}                                                                     \
+                                                                      \
+inline                                                                \
+void FibrePrint( type scaler, int indent){                            \
+  print( scaler, indent);                                             \
+}                                                                     \
+                                                                      \
+inline                                                                \
+void print( type[+] array, int indent){                               \
+  indent(indent);                                                     \
+  svp_io_puts("[\n");                                                 \
+                                                                      \
+  for ( i=0; i < shape(array)[0]; i++){                               \
+    print( array[i], indent + 1);                                     \
+  }                                                                   \
+                                                                      \
+  indent(indent);                                                     \
+  svp_io_puts("]\n");                                                 \
+}                                                                     \
+                                                                      \
+inline                                                                \
+void FibrePrint( type[+] array, int indent){                          \
+  indent( indent);                                                    \
+  svp_io_puts( "[1,");                                                \
+  sac_svp_io_putn( shape(array)[0], 10);                              \
+  svp_io_puts( ":\n");                                                \
+                                                                      \
+  for (i=0; i< shape(array)[0]; i++){                                 \
+    FibrePrint( array[i], indent+1);                                  \
+  }                                                                   \
+                                                                      \
+  indent( indent);                                                    \
+  svp_io_puts( "]\n");                                                \
+}                                                                     
 
-inline
-void print( double scaler, int indent){
-  indent( indent);
-  svp_io_putf( scaler, 16, 10);
-  svp_io_puts( "\n");
-}
+UNTYPED( int)
+UNTYPED( double)
 
 inline
 void print( int scaler, int indent){
@@ -43,29 +79,10 @@ void print( int scaler, int indent){
 }
 
 inline
-void print( double[+] array, int indent){
-  indent(indent);
-  svp_io_puts("[\n");
-  
-  for ( i=0; i < shape(array)[0]; i++){
-    print( array[i], indent + 1);
-  }
-  
-  indent(indent);
-  svp_io_puts("]\n");
-}
-
-inline
-void print( int[+] array, int indent){
-  indent(indent);
-  svp_io_puts("[\n");
-  
-  for ( i=0; i < shape(array)[0]; i++){
-    print( array[i], indent + 1);
-  }
-  
-  indent(indent);
-  svp_io_puts("]\n");
+void print( double scaler, int indent){
+  indent( indent);
+  svp_io_putf( scaler, 16, 10);
+  svp_io_puts( "\n");
 }
 
 inline
