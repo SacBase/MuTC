@@ -11,13 +11,15 @@ objdef MutcIO mutcWorld = to_MutcIO( 0);
 
 external void svp_io_puts( String::string a);
 #pragma effect MutcIO::mutcWorld
+#pragma mutcthreadfun
 
 external void svp_io_putf( double d, int places, int base);
 #pragma effect MutcIO::mutcWorld
+#pragma mutcthreadfun
 
 external void sac_svp_io_putn( int num, int base);
 #pragma effect MutcIO::mutcWorld
-
+#pragma mutcthreadfun
 
 #define UNTYPED( type)                                                \
 inline                                                                \
