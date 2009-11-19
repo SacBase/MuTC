@@ -5,7 +5,7 @@ classtype int;
 use ArrayArith: { +, sel, <};
 use ArrayBasics: { dim, shape};
 
-export { FibrePrint, print, mutcWorld};
+export { MutcIO,  FibrePrint, print, mutcWorld};
 
 objdef MutcIO mutcWorld = to_MutcIO( 0);
 
