@@ -1,0 +1,86 @@
+class MutcBenchmarking;
+external classtype;
+/*use MutcIO: all;*/
+use Interval: all;
+use String: all;
+
+export { Interval, start, end, benchThis, printResult, 
+         getInterval, destroyInterval};
+
+objdef MutcBenchmarking TheBenchmarkObject = create_TheBenchmarkObject( );
+
+void start( Interval& interval){
+  _start( interval);
+}
+external void _start( Interval& interval);
+#pragma linkname "benchStart"
+#pragma linkobj "src/bench.o"
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+
+void end( Interval& interval){
+  _end( interval);
+}
+external void _end( Interval& interval);
+#pragma linkname "benchEnd"
+#pragma linkobj "src/bench.o"
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+
+void printResult( Interval& interval){
+  _printResult( interval);
+}
+external void _printResult( Interval& interval);
+#pragma linkname "benchPrint"
+#pragma linkobj "src/bench.o"
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+
+void benchThis(){
+  _benchThis();
+}
+
+external void _benchThis( );
+#pragma linkobj "src/bench.o"
+#pragma linkname "benchThis"
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+
+external MutcBenchmarking create_TheBenchmarkObject( );
+#pragma linksign [1]
+#pragma effect World::TheWorld
+#pragma linkobj "src/bench.o"
+#pragma linkname "benchCreate"
+
+#if 0
+/* Not Implimented */
+external Interval getInterval( string interval_name, int interval_number);
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+#pragma linkname "benchGetInterval_si"
+#pragma linkobj "src/bench.o"
+#pragma linksign [1,2,3]
+
+/* Not Implimented */
+external Interval getInterval( string interval_name);
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+#pragma linkname "benchGetInterval_s"
+#pragma linkobj "src/bench.o"
+#pragma linksign [1,2]
+#endif 
+
+Interval getInterval( int interval_number){
+  return(_getInterval( interval_number));
+}
+
+external Interval _getInterval( int interval_number);
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+#pragma linkname "benchGetInterval_i"
+#pragma linkobj "src/bench.o"
+#pragma linksign [1,2]
+
+void destroyInterval( Interval interval){
+  _destroyInterval( interval);
+  return;
+}
+
+external void _destroyInterval( Interval interval);
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+#pragma linksign [1]
+#pragma linkname "benchDestroyInterval"
+#pragma linkobj "src/bench.o"
