@@ -4,12 +4,14 @@ classtype int;
 
 use ArrayArith: { +, sel, <};
 use ArrayBasics: { dim, shape};
+use String: { string};
 
-export { MutcIO,  FibrePrint, print, mutcWorld};
+export { MutcIO, FibrePrint, print, mutcWorld, 
+           FibreScanIntArray, FibreScanDoubleArray};
 
 objdef MutcIO mutcWorld = to_MutcIO( 0);
 
-external void svp_io_puts( String::string a);
+external void svp_io_puts( string a);
 #pragma effect MutcIO::mutcWorld
 #pragma mutcthreadfun
 
@@ -21,57 +23,73 @@ external void sac_svp_io_putn( int num, int base);
 #pragma effect MutcIO::mutcWorld
 #pragma mutcthreadfun
 
-#define UNTYPED( type)                                                \
-inline                                                                \
-void print( type[*] array){                                           \
-  print(array, 0);                                                    \
-}                                                                     \
-                                                                      \
-inline                                                                \
-void FibrePrint( type[+] array){                                      \
-  FibrePrint( array, 0);                                              \
-}                                                                     \
-                                                                      \
-inline                                                                \
-void FibrePrint( type scaler){                                        \
-  FibrePrint( scaler, 0);                                             \
-}                                                                     \
-                                                                      \
-inline                                                                \
-void FibrePrint( type scaler, int indent){                            \
-  print( scaler, indent);                                             \
-}                                                                     \
-                                                                      \
-inline                                                                \
-void print( type[+] array, int indent){                               \
-  indent(indent);                                                     \
-  svp_io_puts("[\n");                                                 \
-                                                                      \
-  for ( i=0; i < shape(array)[0]; i++){                               \
-    print( array[i], indent + 1);                                     \
-  }                                                                   \
-                                                                      \
-  indent(indent);                                                     \
-  svp_io_puts("]\n");                                                 \
-}                                                                     \
-                                                                      \
-inline                                                                \
-void FibrePrint( type[+] array, int indent){                          \
-  indent( indent);                                                    \
-  svp_io_puts( "[1,");                                                \
-  sac_svp_io_putn( shape(array)[0], 10);                              \
-  svp_io_puts( ":\n");                                                \
-                                                                      \
-  for (i=0; i< shape(array)[0]; i++){                                 \
-    FibrePrint( array[i], indent+1);                                  \
-  }                                                                   \
-                                                                      \
-  indent( indent);                                                    \
-  svp_io_puts( "]\n");                                                \
-}                                                                     
+external int[*] read_int( );
+#pragma effect MutcIO::mutcWorld         
+#pragma linkobj "src/MutcIO/read.o"             
+#pragma linksign[1] 
+#pragma refcounting[0] 
 
-UNTYPED( int)
-UNTYPED( double)
+external double[*] read_double( );
+#pragma effect MutcIO::mutcWorld         
+#pragma linkobj "src/MutcIO/read.o"             
+#pragma linksign[1]                    
+#pragma refcounting[0] 
+
+#define UNTYPED( type, name)                                         \
+inline                                                               \
+void print( type[*] array){                                          \
+  print(array, 0);                                                   \
+}                                                                    \
+                                                                     \
+inline                                                               \
+void FibrePrint( type[+] array){                                     \
+  FibrePrint( array, 0);                                             \
+}                                                                    \
+                                                                     \
+inline                                                               \
+void FibrePrint( type scaler){                                       \
+  FibrePrint( scaler, 0);                                            \
+}                                                                    \
+                                                                     \
+inline                                                               \
+void FibrePrint( type scaler, int indent){                           \
+  print( scaler, indent);                                            \
+}                                                                    \
+                                                                     \
+inline                                                               \
+void print( type[+] array, int indent){                              \
+  indent(indent);                                                    \
+  svp_io_puts("[\n");                                                \
+                                                                     \
+  for ( i=0; i < shape(array)[0]; i++){                              \
+    print( array[i], indent + 1);                                    \
+  }                                                                  \
+                                                                     \
+  indent(indent);                                                    \
+  svp_io_puts("]\n");                                                \
+}                                                                    \
+                                                                     \
+inline                                                               \
+void FibrePrint( type[+] array, int indent){                         \
+  indent( indent);                                                   \
+  svp_io_puts( "[1,");                                               \
+  sac_svp_io_putn( shape(array)[0], 10);                             \
+  svp_io_puts( ":\n");                                               \
+                                                                     \
+  for (i=0; i< shape(array)[0]; i++){                                \
+    FibrePrint( array[i], indent+1);                                 \
+  }                                                                  \
+                                                                     \
+  indent( indent);                                                   \
+  svp_io_puts( "]\n");                                               \
+}                                                                    \
+                                                                     \
+type[*] FibreScan##name##Array( ){                                   \
+  return( read_##type( ));                                           \
+}
+
+UNTYPED( int, Int)
+UNTYPED( double, Double)
 
 inline
 void print( int scaler, int indent){
@@ -87,6 +105,23 @@ void print( double scaler, int indent){
   svp_io_puts( "\n");
 }
 
+inline
+void print( string scaler, int indent){
+  indent( indent);
+  svp_io_puts( scaler);
+}
+
+/*
+ * Special cases where arrays of type are not supported
+ */
+inline 
+void print( string scaler){
+  print( scaler, 0);
+}
+
+/* 
+ * Indent [indent] amount
+ */
 inline
 void indent( int indent){
   for ( i=0; i<indent; i++){

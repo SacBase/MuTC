@@ -1,6 +1,6 @@
 class MutcBenchmarking;
 external classtype;
-/*use MutcIO: all;*/
+
 use Interval: all;
 use String: all;
 
@@ -48,21 +48,26 @@ external MutcBenchmarking create_TheBenchmarkObject( );
 #pragma linkobj "src/bench.o"
 #pragma linkname "benchCreate"
 
-#if 0
-/* Not Implimented */
-external Interval getInterval( string interval_name, int interval_number);
+Interval getInterval( string interval_name, int interval_number){
+  return(_getInterval( interval_name, interval_number));
+}
+
+external Interval _getInterval( string interval_name, int interval_number);
 #pragma effect MutcBenchmarking::TheBenchmarkObject
 #pragma linkname "benchGetInterval_si"
 #pragma linkobj "src/bench.o"
 #pragma linksign [1,2,3]
 
-/* Not Implimented */
-external Interval getInterval( string interval_name);
+Interval getInterval( string interval_name){
+  return(_getInterval( interval_name));
+}
+
+external Interval _getInterval( string interval_name);
 #pragma effect MutcBenchmarking::TheBenchmarkObject
 #pragma linkname "benchGetInterval_s"
 #pragma linkobj "src/bench.o"
 #pragma linksign [1,2]
-#endif 
+ 
 
 Interval getInterval( int interval_number){
   return(_getInterval( interval_number));
