@@ -9,16 +9,6 @@
 
 static int FibreCount = 0;
 
-int prod( int n, size_t* shape){
-  int i, total=1;
-
-  for (i=0; i<n; i++){
-    total*=(int)shape[n];
-  }
-
-  return( total);
-}
-
 #define UNTYPED( type)                                                  \
 void read_##type( SAC_ND_PARAM_out( res##type##_nt, type)){             \
   int i;                                                                \
@@ -27,25 +17,26 @@ void read_##type( SAC_ND_PARAM_out( res##type##_nt, type)){             \
   SAC_ND_DECL__DESC( local##type##_nt, );                               \
   SAC_ND_DECL__DATA( local##type##_nt, type, );                         \
   int SAC_ND_A_MIRROR_DIM( local##type##_nt);                           \
-  int SAC_ND_A_MIRROR_SIZE( local##type##_nt);                          \
+  int SAC_ND_A_MIRROR_SIZE( local##type##_nt) = 1;                      \
                                                                         \
   SAC_ND_A_MIRROR_DIM( local##type##_nt) = fibre_rank( FibreCount);     \
   shape = (size_t *)fibre_shape( FibreCount);                           \
-  SAC_ND_A_MIRROR_SIZE( local##type##_nt) =                             \
-    prod( SAC_ND_A_MIRROR_DIM( local##type##_nt), shape);               \
                                                                         \
   SAC_ND_ALLOC__DESC( local##type##_nt,                                 \
                      SAC_ND_A_MIRROR_DIM( local##type##_nt));           \
-  SAC_ND_A_RC( local##type##_nt) = 2;                                   \
+  SAC_ND_A_RC( local##type##_nt) = 1;                                   \
                                                                         \
   SAC_ND_A_DESC_DIM( local##type##_nt) =                                \
     SAC_ND_A_MIRROR_DIM( local##type##_nt);                             \
-  SAC_ND_A_DESC_SIZE( local##type##_nt) =                               \
-    SAC_ND_A_MIRROR_SIZE( local##type##_nt);                            \
                                                                         \
   for ( i = 0; i < SAC_ND_A_DIM( local##type##_nt); i++){               \
+    SAC_ND_A_MIRROR_SIZE( local##type##_nt) =                           \
+      SAC_ND_A_MIRROR_SIZE( local##type##_nt) * (int)shape[i];          \
     SAC_ND_A_DESC_SHAPE( local##type##_nt, i) = (int)shape[i];          \
   }                                                                     \
+                                                                        \
+  SAC_ND_A_DESC_SIZE( local##type##_nt) =                               \
+    SAC_ND_A_MIRROR_SIZE( local##type##_nt);                            \
                                                                         \
   SAC_ND_ALLOC__DATA( local##type##_nt);                                \
                                                                         \
