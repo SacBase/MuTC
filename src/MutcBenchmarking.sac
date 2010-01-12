@@ -33,6 +33,77 @@ external void _printResult( Interval& interval);
 #pragma linkobj "src/bench.o"
 #pragma effect MutcBenchmarking::TheBenchmarkObject
 
+external void printResult( Interval& a,
+                           Interval& b);
+#pragma linkname "benchPrint2"
+#pragma linkobj "src/bench.o"
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+external void printResult( Interval& a,
+                           Interval& b,
+                           Interval& c);
+#pragma linkname "benchPrint3"
+#pragma linkobj "src/bench.o"
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+external void printResult( Interval& a,
+                           Interval& b,
+                           Interval& c,
+                           Interval& d);
+#pragma linkname "benchPrint4"
+#pragma linkobj "src/bench.o"
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+external void printResult( Interval& a,
+                           Interval& b,
+                           Interval& c,
+                           Interval& d,
+                           Interval& e);
+#pragma linkname "benchPrint5"
+#pragma linkobj "src/bench.o"
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+external void printResult( Interval& a,
+                           Interval& b,
+                           Interval& c,
+                           Interval& d,
+                           Interval& e,
+                           Interval& f);
+#pragma linkname "benchPrint6"
+#pragma linkobj "src/bench.o"
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+external void printResult( Interval& a,
+                           Interval& b,
+                           Interval& c,
+                           Interval& d,
+                           Interval& e,
+                           Interval& f,
+                           Interval& g);
+#pragma linkname "benchPrint7"
+#pragma linkobj "src/bench.o"
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+external void printResult( Interval& a,
+                           Interval& b,
+                           Interval& c,
+                           Interval& d,
+                           Interval& e,
+                           Interval& f,
+                           Interval& g,
+                           Interval& h);
+#pragma linkname "benchPrint8"
+#pragma linkobj "src/bench.o"
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+external void printResult( Interval& a,
+                           Interval& b,
+                           Interval& c,
+                           Interval& d,
+                           Interval& e,
+                           Interval& f,
+                           Interval& g,
+                           Interval& h,
+                           Interval& i,
+                           Interval& j);
+#pragma linkname "benchPrint9"
+#pragma linkobj "src/bench.o"
+#pragma effect MutcBenchmarking::TheBenchmarkObject
+
+
 void benchThis(){
   _benchThis();
 }
