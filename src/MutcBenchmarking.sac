@@ -1,7 +1,7 @@
 class MutcBenchmarking;
 external classtype;
 
-use Interval: all;
+import Interval: all;
 use String: all;
 
 export { Interval, start, end, benchThis, printResult, 
