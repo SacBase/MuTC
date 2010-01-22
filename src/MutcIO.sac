@@ -29,7 +29,7 @@ external int[*] read_int( );
 #pragma linksign[1] 
 #pragma refcounting[0] 
 
-external double[*] read_float( );
+external float[*] read_float( );
 #pragma effect MutcIO::mutcWorld         
 #pragma linkobj "src/MutcIO/read.o"             
 #pragma linksign[1]                    
