@@ -7,7 +7,7 @@ use ArrayBasics: { dim, shape};
 use String: { string};
 
 export { MutcIO, FibrePrint, print, mutcWorld, 
-           FibreScanIntArray, FibreScanDoubleArray};
+           FibreScanIntArray, FibreScanDoubleArray, FibreScanFloatArray};
 
 objdef MutcIO mutcWorld = to_MutcIO( 0);
 
