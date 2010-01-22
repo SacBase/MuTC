@@ -66,11 +66,14 @@ void read_##type( SAC_ND_PARAM_out( res##type##_nt, type)){             \
 
 
 #define resint_nt (res, (AUD, (NHD, (NUQ, (INT, (GLO, (FPA, )))))))
+#define resfloat_nt (res, (AUD, (NHD, (NUQ, (FLO, (GLO, (FPA, )))))))
 #define resdouble_nt (res, (AUD, (NHD, (NUQ, (FLO, (GLO, (FPA, )))))))
 
 #define localint_nt (local, (AUD, (NHD, (NUQ, (INT, (GLO, (FPA, )))))))
+#define localfloat_nt (local, (AUD, (NHD, (NUQ, (FLO, (GLO, (FPA, )))))))
 #define localdouble_nt (local, (AUD, (NHD, (NUQ, (FLO, (GLO, (FPA, )))))))
 
 UNTYPED( int)
+UNTYPED( float)
 UNTYPED( double)
 

@@ -2,7 +2,7 @@ class MutcIO;
 
 classtype int;
 
-use ArrayArith: { +, sel, <};
+use ArrayArith: { +, sel, <, tod};
 use ArrayBasics: { dim, shape};
 use String: { string};
 
@@ -27,6 +27,12 @@ external int[*] read_int( );
 #pragma effect MutcIO::mutcWorld         
 #pragma linkobj "src/MutcIO/read.o"             
 #pragma linksign[1] 
+#pragma refcounting[0] 
+
+external double[*] read_float( );
+#pragma effect MutcIO::mutcWorld         
+#pragma linkobj "src/MutcIO/read.o"             
+#pragma linksign[1]                    
 #pragma refcounting[0] 
 
 external double[*] read_double( );
@@ -90,11 +96,19 @@ type[*] FibreScan##name##Array( ){                                   \
 
 UNTYPED( int, Int)
 UNTYPED( double, Double)
+UNTYPED( float, Float)
 
 inline
 void print( int scaler, int indent){
   indent( indent);
   sac_svp_io_putn( scaler, 10);
+  svp_io_puts( "\n");
+}
+
+inline
+void print( float scaler, int indent){
+  indent( indent);
+  svp_io_putf( tod( scaler), 16, 10);
   svp_io_puts( "\n");
 }
 
