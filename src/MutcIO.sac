@@ -41,7 +41,7 @@ external double[*] read_double( );
 #pragma linksign[1]                    
 #pragma refcounting[0] 
 
-#define UNTYPED( type, name)                                         \
+#define UNTYPEDOUT( type)                                            \
 inline                                                               \
 void print( type[*] array){                                          \
   print(array, 0);                                                   \
@@ -60,6 +60,11 @@ void FibrePrint( type scaler){                                       \
 inline                                                               \
 void FibrePrint( type scaler, int indent){                           \
   print( scaler, indent);                                            \
+}                                                                    \
+                                                                     \
+inline                                                               \
+void print( type scaler, int indent){                                \
+  print( scaler, indent, true);                                      \
 }                                                                    \
                                                                      \
 inline                                                               \
@@ -88,46 +93,73 @@ void FibrePrint( type[+] array, int indent){                         \
                                                                      \
   indent( indent);                                                   \
   svp_io_puts( "]\n");                                               \
-}                                                                    \
-                                                                     \
+}                                                                    
+
+#define UNTYPEDIN( type, name)                                       \
 type[*] FibreScan##name##Array( ){                                   \
   return( read_##type( ));                                           \
 }
+
+#define UNTYPED( type, name) UNTYPEDIN( type, name) UNTYPEDOUT( type)
 
 UNTYPED( int, Int)
 UNTYPED( double, Double)
 UNTYPED( float, Float)
 
+UNTYPEDOUT( bool)
+
 inline
-void print( int scaler, int indent){
+void print( int scaler, int indent, bool nl){
   indent( indent);
   sac_svp_io_putn( scaler, 10);
-  svp_io_puts( "\n");
+  nl( nl);
 }
 
 inline
-void print( float scaler, int indent){
+void print( float scaler, int indent, bool nl){
   indent( indent);
   svp_io_putf( tod( scaler), 16, 10);
-  svp_io_puts( "\n");
+  nl( nl);
 }
 
 inline
-void print( double scaler, int indent){
+void print( double scaler, int indent, bool nl){
   indent( indent);
   svp_io_putf( scaler, 16, 10);
-  svp_io_puts( "\n");
+  nl( nl);
 }
 
 inline
-void print( string scaler, int indent){
+void print( bool scaler, int indent, bool nl){
+  if ( scaler){
+    print( "TRUE", indent, nl);
+  } else {
+    print( "FALSE", indent, nl);
+  }
+}
+
+inline
+void print( string scaler, int indent, bool nl){
   indent( indent);
   svp_io_puts( scaler);
+  nl( nl);
+}
+
+inline
+void nl( bool nl){
+  if ( nl){
+    print( "\n");
+  }
 }
 
 /*
  * Special cases where arrays of type are not supported
  */
+inline
+void print( string scaler, int indent){
+  print( scaler, indent, false);
+}
+
 inline 
 void print( string scaler){
   print( scaler, 0);
