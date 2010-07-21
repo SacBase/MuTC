@@ -146,6 +146,11 @@ void print( string scaler, int indent, bool nl){
 }
 
 inline
+void FibrePrint(string scaler){
+  print(scaler,0,true);
+}
+
+inline
 void nl( bool nl){
   if ( nl){
     print( "\n");
