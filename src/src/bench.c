@@ -1,7 +1,7 @@
 #define SAC_DO_COMPILE_MODULE 1
 #define SAC_MUTC_FUNAP_AS_CREATE  1
 #define SAC_MUTC_MACROS  1
-#define SAC_BACKEND muTC
+#define SAC_BACKEND MUTC
 
 #include "stdarg.h"
 #include "cmalloc.h"
@@ -18,13 +18,43 @@ void benchStart( struct bench *interval)
   mtperf_start_interval( interval->interval, 0, interval->num, 
                          (const char *) interval->name);
   return;                                                                
-}                                                                        
+}
+
+sl_def(bench_start_rc_threadfun, void, sl_shparm(struct bench*, interval))
+{
+   struct bench *local = sl_getp( interval);
+   benchStart( local);
+   sl_setp( interval, local);
+}
+sl_enddef
+
+void benchStartRC( struct bench *interval)                                 
+{                                                                        
+  sl_create(,SAC_mutc_rc_place,0,1,1,,,bench_start_rc_threadfun,sl_sharg(struct bench*, , interval)); 
+  sl_sync();
+  return;                                                                
+}     
                                                                          
 void benchEnd( struct bench* interval)                                   
 {                                                                        
   mtperf_finish_interval( interval->interval, 0);
   return;                                                                
-}                         
+}  
+
+sl_def(bench_end_rc_threadfun, void, sl_shparm(struct bench*, interval))
+{
+   struct bench *local = sl_getp( interval);
+   benchEnd( local);
+   sl_setp( interval, local);
+}
+sl_enddef
+
+void benchEndRC( struct bench* interval)                                   
+{                                                                        
+  sl_create(,SAC_mutc_rc_place,0,1,1,,,bench_end_rc_threadfun,sl_sharg(struct bench*, , interval)); 
+  sl_sync(); 
+  return;                                                                
+}                       
                                                
 /* noop*/
 void benchThis( )                                                        
