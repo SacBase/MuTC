@@ -168,7 +168,7 @@ void benchPrint10( struct bench *a,
                                                                          
 void benchGetInterval_i( struct bench** interval, int num)               
 {                                                                        
-  (*interval) = (struct bench*)malloc( sizeof( (*interval)));
+  (*interval) = (struct bench*)malloc( sizeof( struct bench));
   (*interval)->interval = mtperf_alloc_intervals(1);
   (*interval)->num = num;
   (*interval)->name = (char *)malloc(sizeof(char));
@@ -178,7 +178,7 @@ void benchGetInterval_i( struct bench** interval, int num)
 
 void benchGetInterval_s( struct bench** interval, char *name) 
 {                                                                        
-  (*interval) = (struct bench*)malloc( sizeof( (*interval)));
+  (*interval) = (struct bench*)malloc( sizeof( struct bench));
   (*interval)->interval = mtperf_alloc_intervals(1);
   (*interval)->num = -1;                                                   
   (*interval)->name = name;
@@ -187,7 +187,7 @@ void benchGetInterval_s( struct bench** interval, char *name)
 
 void benchGetInterval_si( struct bench** interval, char * name, int num)
 {                                                                        
-  (*interval) = (struct bench*)malloc( sizeof( (*interval)));
+  (*interval) = (struct bench*)malloc( sizeof( struct bench));
   (*interval)->interval = mtperf_alloc_intervals(1);
   (*interval)->num = num;                                    
   (*interval)->name = name;
