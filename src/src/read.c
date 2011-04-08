@@ -4,7 +4,7 @@
 
 #include "svp/fibre.h"
 #include "sac.h"
-#include "cmalloc.h"
+#include <stdlib.h>
 #include "svp/abort.h"
 
 static int FibreCount = 0;
