@@ -6,6 +6,7 @@
 #include "sac.h"
 #include <stdlib.h>
 #include "svp/abort.h"
+#include "stdio.h"
 
 static int FibreCount = 0;
 
@@ -19,6 +20,10 @@ void read_##type( SAC_ND_PARAM_out( res##type##_nt, type)){             \
   int SAC_ND_A_MIRROR_DIM( local##type##_nt);                           \
   int SAC_ND_A_MIRROR_SIZE( local##type##_nt) = 1;                      \
                                                                         \
+  if ( fibre_tag( FibreCount) == -1){                                   \
+    printf( "Ran out of fibre input read %d inputs\n", FibreCount);     \
+    svp_abort();                                                        \
+  }                                                                     \
   SAC_ND_A_MIRROR_DIM( local##type##_nt) = fibre_rank( FibreCount);     \
   shape = (size_t *)fibre_shape( FibreCount);                           \
                                                                         \
@@ -56,6 +61,7 @@ void read_##type( SAC_ND_PARAM_out( res##type##_nt, type)){             \
         (type )(((double*)fibre_data( FibreCount))[i]);                 \
       break;                                                            \
     default:                                                            \
+      printf("Unknow type of fibre input\n");                           \
       svp_abort();                                                      \
       break;                                                            \
     }                                                                   \

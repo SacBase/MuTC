@@ -4,7 +4,6 @@
 #define SAC_BACKEND MUTC
 
 #include "stdarg.h"
-#include "cmalloc.h"
 #include "sac.h"
 
 struct bench {                                                   
@@ -14,7 +13,10 @@ struct bench {
 };                                                                       
                                                                          
 void benchStart( struct bench *interval)                                 
-{                                                                        
+{       
+#if DEBUG
+  output_hex( sizeof( *interval->interval), 0);
+#endif
   mtperf_start_interval( interval->interval, 0, interval->num, 
                          (const char *) interval->name);
   return;                                                                
@@ -29,15 +31,21 @@ sl_def(bench_start_rc_threadfun, void, sl_shparm(struct bench*, interval))
 sl_enddef
 
 void benchStartRC( struct bench *interval)                                 
-{                                                                        
+{         
   sl_create(,SAC_mutc_rc_place,0,1,1,,,bench_start_rc_threadfun,sl_sharg(struct bench*, , interval)); 
   sl_sync();
   return;                                                                
 }     
                                                                          
 void benchEnd( struct bench* interval)                                   
-{                                                                        
+{                                           
+#if DEBUG
+  output_hex( sizeof( *interval->interval), 0);                              
+#endif
   mtperf_finish_interval( interval->interval, 0);
+#if DEBUG
+  mtperf_report_intervals( interval->interval, 1, REPORT_FIBRE);
+#endif
   return;                                                                
 }  
 
@@ -63,7 +71,10 @@ void benchThis( )
 }                                                                        
                                                                          
 void benchPrint( struct bench* interval)                                 
-{                                                                        
+{       
+#if DEBUG                                    
+  output_hex( sizeof( *interval->interval), 0);                              
+#endif
   mtperf_report_intervals( interval->interval, 1, REPORT_FIBRE);
   return;                                                                
 }
@@ -83,8 +94,10 @@ void benchPrintVector( int n, ...)
   va_list dots;
   int i=0;
   struct s_interval intervals[n];
-
   va_start( dots, n);
+#if DEBUG
+  output_hex( sizeof( *intervals), 0);
+#endif
   for (i=0;i<n;i++){
     intervals[i] =  *(va_arg( dots, struct bench*)->interval);
   }
