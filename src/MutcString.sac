@@ -1,0 +1,67 @@
+module MutcString;
+
+import ArrayBasics: {shape,sel};
+import Char: all;
+
+export { to_string, string, strlen, tochar, +, tos};
+
+external typedef string;
+
+external string to_string( char[+] a, int length);
+#pragma refcounting[0,1]
+#pragma linkobj "src/tostring.o"
+
+external int strlen(string s);
+#pragma linkobj "src/strlen.o"
+#pragma linkname "SACstrlen"
+
+external char strsel(string S, int P);
+#pragma linksign[ 0,1,2]
+#pragma linkobj "src/strsel.o"
+/* Select character P of string S. */
+
+external string + (string S1, string S2);
+#pragma linkname "SACstrcat"
+#pragma linksign [0,1,2]
+#pragma linkobj "src/strcat.o"
+/* Infix version of strcat. */
+
+external string tos(int N);
+#pragma linkname "SACitos"
+#pragma linksign [0,1]
+#pragma linkobj "src/itos.o"
+/*  Convert integer into string.  */
+
+external string tos(double N);
+#pragma linkname "SACdtos"
+#pragma linksign [0,1]
+#pragma linkobj "src/dtos.o"
+/*  Convert double into string.   */
+   
+external string tos(float N);
+#pragma linkname "SACftos"
+#pragma linksign [0,1]
+#pragma linkobj "src/ftos.o"
+/*  Convert float into string.    */
+
+external string tos(bool B);
+#pragma linkname "SACbtos"
+#pragma linksign [0,1]
+#pragma linkobj "src/btos.o"
+/*  Convert boolean into string.  */
+    
+inline char[.] tochar( string s)
+{
+  res = with {
+          ( . <= [i] <= . ) : strsel( s, i );
+        } : genarray( [strlen(s)], ' ' );
+
+  return( res);
+}
+
+string to_string(char[.] arr)
+{
+  int len;
+  len=shape(arr)[[0]];
+  return(to_string(_cat_VxV_(arr, ['\0']), len));
+}

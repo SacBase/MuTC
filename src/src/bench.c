@@ -32,7 +32,7 @@ sl_enddef
 
 void benchStartRC( struct bench *interval)                                 
 {         
-  sl_create(,SAC_mutc_rc_place,0,1,1,,,bench_start_rc_threadfun,sl_sharg(struct bench*, , interval)); 
+  sl_create(,SAC_MUTC_RC_PLACES_VAR,0,1,1,,,bench_start_rc_threadfun,sl_sharg(struct bench*, , interval)); 
   sl_sync();
   return;                                                                
 }     
@@ -59,7 +59,7 @@ sl_enddef
 
 void benchEndRC( struct bench* interval)                                   
 {                                                                        
-  sl_create(,SAC_mutc_rc_place,0,1,1,,,bench_end_rc_threadfun,sl_sharg(struct bench*, , interval)); 
+  sl_create(,SAC_MUTC_RC_PLACES_VAR,0,1,1,,,bench_end_rc_threadfun,sl_sharg(struct bench*, , interval)); 
   sl_sync(); 
   return;                                                                
 }                       
