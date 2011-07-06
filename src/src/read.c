@@ -29,7 +29,7 @@ void read_##type( SAC_ND_PARAM_out( res##type##_nt, type)){             \
                                                                         \
   SAC_ND_ALLOC__DESC( local##type##_nt,                                 \
                      SAC_ND_A_MIRROR_DIM( local##type##_nt));           \
-  SAC_ND_A_RC( local##type##_nt) = 1;                                   \
+  SAC_ND_SET__RC( local##type##_nt, 1);                                 \
                                                                         \
   SAC_ND_A_DESC_DIM( local##type##_nt) =                                \
     SAC_ND_A_MIRROR_DIM( local##type##_nt);                             \
