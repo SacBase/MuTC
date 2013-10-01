@@ -6,6 +6,8 @@ use ArrayArith: { +, sel, <, tod};
 use ArrayBasics: { dim, shape};
 use String: { string};
 
+#ifdef SAC_BACKEND_MUTC
+
 export { MutcIO, FibrePrint, print, mutcWorld, 
            FibreScanIntArray, FibreScanDoubleArray, FibreScanFloatArray};
 
@@ -179,3 +181,5 @@ void indent( int indent){
     svp_io_puts("  ");
   }
 }
+
+#endif

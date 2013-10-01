@@ -1,9 +1,9 @@
+#ifdef SAC_BACKEND_MUTC
 #define SAC_DO_COMPILE_MODULE 1
 #define SAC_MUTC_MACROS  1
-#define SAC_BACKEND muTC
 
-#include "svp/fibre.h"
 #include "sac.h"
+#include "svp/fibre.h"
 #include <stdlib.h>
 #include "svp/abort.h"
 #include "stdio.h"
@@ -83,3 +83,4 @@ UNTYPED( int)
 UNTYPED( float)
 UNTYPED( double)
 
+#endif

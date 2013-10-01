@@ -1,6 +1,6 @@
+#ifdef SAC_BACKEND_MUTC
 #define SAC_DO_COMPILE_MODULE 1
 #define SAC_MUTC_MACROS  1
-#define SAC_BACKEND MUTC
 #include "sac.h"
 
 typedef char* string;
