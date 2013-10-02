@@ -7,20 +7,20 @@
 #include "stdarg.h"
 #include "sac.h"
 
-struct bench {                                                   
-  int                num; 
+struct bench {
+  int                num;
   char *             name;
-  struct s_interval *interval;                                            
-};                                                                       
-                                                                         
-void benchStart( struct bench *interval)                                 
-{       
+  struct s_interval *interval;
+};
+
+void benchStart( struct bench *interval)
+{
 #if DEBUG
   output_hex( sizeof( *interval->interval), 0);
 #endif
-  mtperf_start_interval( interval->interval, 0, interval->num, 
+  mtperf_start_interval( interval->interval, 0, interval->num,
                          (const char *) interval->name);
-  return;                                                                
+  return;
 }
 
 sl_def(bench_start_rc_threadfun, void, sl_shparm(struct bench*, interval))
@@ -31,24 +31,24 @@ sl_def(bench_start_rc_threadfun, void, sl_shparm(struct bench*, interval))
 }
 sl_enddef
 
-void benchStartRC( struct bench *interval)                                 
-{         
-  sl_create(,SAC_MUTC_RC_PLACES_VAR,0,1,1,,,bench_start_rc_threadfun,sl_sharg(struct bench*, , interval)); 
+void benchStartRC( struct bench *interval)
+{
+  sl_create(,SAC_MUTC_RC_PLACES_VAR,0,1,1,,,bench_start_rc_threadfun,sl_sharg(struct bench*, , interval));
   sl_sync();
-  return;                                                                
-}     
-                                                                         
-void benchEnd( struct bench* interval)                                   
-{                                           
+  return;
+}
+
+void benchEnd( struct bench* interval)
+{
 #if DEBUG
-  output_hex( sizeof( *interval->interval), 0);                              
+  output_hex( sizeof( *interval->interval), 0);
 #endif
   mtperf_finish_interval( interval->interval, 0);
 #if DEBUG
   mtperf_report_intervals( interval->interval, 1, REPORT_FIBRE);
 #endif
-  return;                                                                
-}  
+  return;
+}
 
 sl_def(bench_end_rc_threadfun, void, sl_shparm(struct bench*, interval))
 {
@@ -58,26 +58,26 @@ sl_def(bench_end_rc_threadfun, void, sl_shparm(struct bench*, interval))
 }
 sl_enddef
 
-void benchEndRC( struct bench* interval)                                   
-{                                                                        
-  sl_create(,SAC_MUTC_RC_PLACES_VAR,0,1,1,,,bench_end_rc_threadfun,sl_sharg(struct bench*, , interval)); 
-  sl_sync(); 
-  return;                                                                
-}                       
-                                               
+void benchEndRC( struct bench* interval)
+{
+  sl_create(,SAC_MUTC_RC_PLACES_VAR,0,1,1,,,bench_end_rc_threadfun,sl_sharg(struct bench*, , interval));
+  sl_sync();
+  return;
+}
+
 /* noop*/
-void benchThis( )                                                        
-{                                                                        
-  return;                                                                
-}                                                                        
-                                                                         
-void benchPrint( struct bench* interval)                                 
-{       
-#if DEBUG                                    
-  output_hex( sizeof( *interval->interval), 0);                              
+void benchThis( )
+{
+  return;
+}
+
+void benchPrint( struct bench* interval)
+{
+#if DEBUG
+  output_hex( sizeof( *interval->interval), 0);
 #endif
   mtperf_report_intervals( interval->interval, 1, REPORT_FIBRE);
-  return;                                                                
+  return;
 }
 
 void benchmemcpy( void* toarg, void* fromarg, size_t n){
@@ -179,45 +179,47 @@ void benchPrint10( struct bench *a,
                    struct bench *j){
   benchPrintVector( 10, a, b, c, d, e, f, g, h, i, j);
 }
-                                                                         
-void benchGetInterval_i( struct bench** interval, int num)               
-{                                                                        
+
+void benchGetInterval_i( struct bench** interval, int num)
+{
   (*interval) = (struct bench*)malloc( sizeof( struct bench));
   (*interval)->interval = mtperf_alloc_intervals(1);
   (*interval)->num = num;
   (*interval)->name = (char *)malloc(sizeof(char));
   (*interval)->name[0] = '\0';
-  return;                                                                
-}                                                                        
+  return;
+}
 
-void benchGetInterval_s( struct bench** interval, char *name) 
-{                                                                        
+void benchGetInterval_s( struct bench** interval, char *name)
+{
   (*interval) = (struct bench*)malloc( sizeof( struct bench));
   (*interval)->interval = mtperf_alloc_intervals(1);
-  (*interval)->num = -1;                                                   
+  (*interval)->num = -1;
   (*interval)->name = name;
-  return;                                                                
-}                                                                        
+  return;
+}
 
 void benchGetInterval_si( struct bench** interval, char * name, int num)
-{                                                                        
+{
   (*interval) = (struct bench*)malloc( sizeof( struct bench));
   (*interval)->interval = mtperf_alloc_intervals(1);
-  (*interval)->num = num;                                    
+  (*interval)->num = num;
   (*interval)->name = name;
-  return;                                                                
-}                                                                        
-                                                                         
-void benchDestroyInterval( struct bench *interval)                        
-{                                                                        
-  mtperf_free_intervals(interval->interval);  
+  return;
+}
+
+void benchDestroyInterval( struct bench *interval)
+{
+  mtperf_free_intervals(interval->interval);
   free(interval->name);
-  free(interval);                                                        
-  return;                                                                
-}                            
-                                            
-void benchCreate( int* a)                                                
-{                                                                        
-  *a=1;                                                                  
-  return;                                                                
-}     
+  free(interval);
+  return;
+}
+
+void benchCreate( int* a)
+{
+  *a=1;
+  return;
+}
+
+#endif

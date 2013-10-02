@@ -33,4 +33,6 @@ void to_string( SAC_ND_PARAM_out( str_nt, string),
 }
 
 #undef str_nt
-#undef ar_nt  
+#undef ar_nt
+
+#endif
