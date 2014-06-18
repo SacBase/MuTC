@@ -222,4 +222,6 @@ void benchCreate( int* a)
   return;
 }
 
-#endif
+#else
+static int this_translation_unit = 0xdead;
+#endif /* SAC_BACKEND_MUTC  */
