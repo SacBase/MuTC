@@ -83,4 +83,6 @@ UNTYPED( int)
 UNTYPED( float)
 UNTYPED( double)
 
-#endif
+#else
+static int this_translation_unit = 0xdead;
+#endif /* SAC_BACKEND_MUTC  */

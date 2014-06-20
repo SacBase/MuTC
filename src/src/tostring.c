@@ -35,4 +35,6 @@ void to_string( SAC_ND_PARAM_out( str_nt, string),
 #undef str_nt
 #undef ar_nt
 
-#endif
+#else
+static int this_translation_unit = 0xdead;
+#endif /* SAC_BACKEND_MUTC  */
